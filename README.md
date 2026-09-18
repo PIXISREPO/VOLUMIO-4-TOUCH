@@ -23,9 +23,11 @@ Volumio plays your music. Set it up before adding the touchscreen controls.
 
 **Pi 3A+ owners:** pause before first boot. Volumio 4.119 needs a boot-file change on this board. See [Troubleshooting](#troubleshooting); the complete fresh-card instructions are still being checked. The tested Zero 2 W needed no such change.
 
-4. Open the **Volumio phone app**, or use a web browser on a phone or computer connected to the same network. Try **http://volumio.local**. You can also use the player's network address.
-5. Follow Volumio's setup screens to connect to your network and choose your audio output.
-6. Play some music to make sure the sound works.
+4. On its first start, Volumio creates its own Wi-Fi hotspot called **Volumio-XXXX**. Open the Wi-Fi settings on your phone, tablet or computer and connect to that hotspot.
+5. Follow the on-screen instructions to connect your player to your home Wi-Fi. If you need more help, see [Volumio's website](https://volumio.com/).
+6. Once the player is connected, go back to your device's Wi-Fi settings and reconnect your phone, tablet or computer to your **home Wi-Fi**.
+7. Open [**http://volumio.local**](http://volumio.local) in your web browser. Or open the **Volumio phone app** and select your player from the discovered devices.
+8. Follow the remaining Volumio setup screens, including choosing your audio output. You are now ready to play some music!
 
 ## 3. Turn on SSH
 
