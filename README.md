@@ -90,15 +90,46 @@ Your Terminal connection will close during the restart. Once Volumio is ready, c
 
 ## 5. Install Touch Plugin Settings
 
-To change the screen layout and appearance from Volumio, you need @nerd’s **Waveshare 2.8 SPI Panel** plugin. It adds a **Settings** page; the touchscreen software installed above does not add that page by itself.
+This optional step adds a **Settings** page to Volumio so you can change the screen layout and appearance without typing more commands.
 
-Sign into your **Volumio account** before installing the plugin. See [@nerd’s Volumio plugin documentation](https://github.com/foonerd/rpi-waveshare28/blob/main/docs/CONFIG.md#volumio-plugin) for the available settings and how the plugin works.
+The plugin installs its own copy of the touchscreen software too. It is not just an extra menu.
 
-**Step-by-step plugin installation instructions still need to be added to this draft.** The linked documentation is a reference, not a beginner installation guide.
+### Download and install the plugin
 
-Once the plugin is installed, open **Settings → Plugins → Installed Plugins**, find **Waveshare 2.8 SPI Panel**, enable it and open **Settings**.
+1. Open Volumio in your browser or phone app and sign into your **Volumio account**. A Free account was sufficient in our tests.
+2. Make sure **SSH is enabled**, as described in step 3. Reopen Terminal or PowerShell and connect to the player again:
 
-We tested the plugin settings on a **Pi 3A+** with the September 14 build. The **Pi Zero 2 W** is also supported by the plugin, but we have not yet tested its settings installation on that board.
+```bash
+ssh volumio@volumio.local
+```
+
+3. Copy and paste this whole block into the connected window. It downloads @nerd’s current software into a new temporary folder and opens the plugin folder:
+
+```bash
+plugin_folder=$(mktemp -d /tmp/waveshare28-plugin.XXXXXX)
+git clone https://github.com/foonerd/rpi-waveshare28.git "$plugin_folder" &&
+cd "$plugin_folder/plugin/waveshare28"
+```
+
+Wait until the download finishes. If you see an error, stop here. Otherwise, enter:
+
+```bash
+volumio plugin install
+```
+
+4. Volumio will warn that this is a **manually installed plugin that has not been verified by Volumio**. To continue with this installation, choose **Yes**.
+5. Wait for **Plugin Successfully Installed**. Keep the player powered on while installation is running.
+
+### Open the settings
+
+6. Return to Volumio and open **Settings → Plugins → Installed Plugins**.
+7. Find **Waveshare 2.8 SPI Panel** and enable it if it is not already enabled. If you can already see **Settings**, open that.
+8. Choose your screen layout and appearance, then save your changes. For the setups used in this guide, keep **SPI / Portrait (0°)** on the Zero 2 W, or **Framebuffer / Portrait (0°) or Landscape (270°)** on the Pi 3A+.
+9. Restart when Volumio asks you to. If this is your first touchscreen installation and the screen stays blank, restart the player once.
+
+For an explanation of the options, see [@nerd’s plugin settings reference](https://github.com/foonerd/rpi-waveshare28/blob/main/docs/CONFIG.md#volumio-plugin).
+
+**What we have tested:** this plugin installation method and its Settings page worked on our Pi 3A+ with the September 14 build. The commands above download the current upstream version, which may have changed since then. The Zero 2 W is supported by the plugin, but its plugin installation and Settings page still need our hands-on test.
 
 ## Troubleshooting
 
