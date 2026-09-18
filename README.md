@@ -232,3 +232,5 @@ For advanced settings, see the upstream repository. Assembly links were checked 
 - The Volumio plugin’s [package metadata](https://github.com/foonerd/rpi-waveshare28/blob/main/plugin/waveshare28/package.json) separately declares **MIT**. This does not make the bundled renderer or all upstream files MIT-licensed; check the applicable upstream notices.
 
 Our MIT licence applies to PIXIS’s original contributions here. It does not relicense @nerd’s software, Volumio, or linked assembly manuals and other external material.
+
+Our sincere thanks go to @nerd for producing an outstanding Plugin for the Volumio community and for his help and advice in porting it to the PIXIS Platform.
