@@ -88,6 +88,18 @@ Your Terminal connection will close during the restart. Once Volumio is ready, c
 
 **Learn the touchscreen controls:** see [@nerd's touchscreen guide on GitHub](https://github.com/foonerd/rpi-waveshare28/blob/main/docs/UI.md#surfaces). The **Surfaces** section explains which icons to tap to open playback controls, volume, track details, player status and larger artwork, and how to close those screens.
 
+## 5. Install Touch Plugin Settings
+
+To change the screen layout and appearance from Volumio, you need @nerd’s **Waveshare 2.8 SPI Panel** plugin. It adds a **Settings** page; the touchscreen software installed above does not add that page by itself.
+
+Sign into your **Volumio account** before installing the plugin. See [@nerd’s Volumio plugin documentation](https://github.com/foonerd/rpi-waveshare28/blob/main/docs/CONFIG.md#volumio-plugin) for the available settings and how the plugin works.
+
+**Step-by-step plugin installation instructions still need to be added to this draft.** The linked documentation is a reference, not a beginner installation guide.
+
+Once the plugin is installed, open **Settings → Plugins → Installed Plugins**, find **Waveshare 2.8 SPI Panel**, enable it and open **Settings**.
+
+We tested the plugin settings on a **Pi 3A+** with the September 14 build. The **Pi Zero 2 W** is also supported by the plugin, but we have not yet tested its settings installation on that board.
+
 ## Troubleshooting
 
 You only need this section if something goes wrong.
@@ -137,7 +149,7 @@ Some live radio stations do not supply a track length, so having no progress bar
 
 ### I cannot find the touchscreen plugin in Volumio
 
-That is expected with this guide. It installs the touchscreen software directly. The separate Volumio plugin and its settings page need their own installation and testing.
+That is expected if you have only completed step 4. It installs the touchscreen software directly. See [Install Touch Plugin Settings](#5-install-touch-plugin-settings) for the separate plugin and its Settings page.
 
 ### Which versions were tested?
 
