@@ -219,4 +219,16 @@ Upstream provides `sudo waveshare28-config recover` to remove the active screen 
 
 Touchscreen software is by [@nerd / foonerd](https://github.com/foonerd/rpi-waveshare28). PIXIS provides the CB-1 guide and hardware testing. This project does not claim official Volumio plugin approval.
 
-For advanced settings and software licences, see the upstream repository. Assembly links were checked on 18 September 2026 and point to the published Beta manuals.
+For advanced settings, see the upstream repository. Assembly links were checked on 18 September 2026 and point to the published Beta manuals.
+
+## Licensing
+
+**PIXIS documentation:** the original PIXIS material in this repository is copyright © 2026 PIXIS and released under the [MIT License](LICENSE).
+
+**@nerd’s software:** [rpi-waveshare28](https://github.com/foonerd/rpi-waveshare28) remains under its own upstream licences:
+
+- The repository’s [main licence is Apache License 2.0](https://github.com/foonerd/rpi-waveshare28/blob/main/LICENSE).
+- Its [README](https://github.com/foonerd/rpi-waveshare28#licence) identifies device-tree overlays under `kernel/source_files/*/overlays/*.dts` as **GPL-2.0 OR MIT**.
+- The Volumio plugin’s [package metadata](https://github.com/foonerd/rpi-waveshare28/blob/main/plugin/waveshare28/package.json) separately declares **MIT**. This does not make the bundled renderer or all upstream files MIT-licensed; check the applicable upstream notices.
+
+Our MIT licence applies to PIXIS’s original contributions here. It does not relicense @nerd’s software, Volumio, or linked assembly manuals and other external material.
