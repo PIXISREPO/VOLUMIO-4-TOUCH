@@ -1,131 +1,175 @@
 # PIXIS Volumio Touch
 
-## 1. Assemble your PIXIS CB-1
+## 1. Build your music player
 
-Start with the illustrated instructions for your Raspberry Pi:
+Follow the picture guide for your Raspberry Pi:
 
-- [Raspberry Pi 3A+ — PIXIS CB-1 assembly instructions, Beta v7 (PDF)](https://github.com/PIXISREPO/PIXIS/blob/main/PIXIS_CB-1_Assembly_Raspberry-Pi-3A%2B_Beta-v7.pdf)
-- [Raspberry Pi Zero 2 W — PIXIS CB-1 assembly instructions, Beta v4 (PDF)](https://github.com/PIXISREPO/PIXIS/blob/main/PIXIS_CB-1_Assembly_Raspberry-Pi-Zero-2W_Beta-v4.pdf)
+- [Raspberry Pi 3A+ assembly guide (PDF)](https://github.com/PIXISREPO/PIXIS/blob/main/PIXIS_CB-1_Assembly_Raspberry-Pi-3A%2B_Beta-v7.pdf)
+- [Raspberry Pi Zero 2 W assembly guide (PDF)](https://github.com/PIXISREPO/PIXIS/blob/main/PIXIS_CB-1_Assembly_Raspberry-Pi-Zero-2W_Beta-v4.pdf)
 
-Both public document links were checked on 18 September 2026. They are the published Beta manuals. Disconnect power before assembling or changing connections.
+Keep the power unplugged while building.
 
-This project combines PIXIS CB-1, a Raspberry Pi and the **Waveshare 2.8-inch SPI capacitive touchscreen, SKU 27579**, with Volumio and [@nerd's rpi-waveshare28 software](https://github.com/foonerd/rpi-waveshare28). The screen provides artwork, track information and touch playback controls for a desktop, side-table or bedside music player.
+You need a PIXIS CB-1 kit, a Raspberry Pi, the Waveshare 2.8-inch SPI touchscreen (**SKU 27579**), a microSD card, a suitable power supply and an audio system.
 
-**Review draft:** the runtime results below are verified against PIXIS's retained tests. Clean-image Pi 3A+ preparation and the separate Volumio plugin installation/recovery route still need a complete customer procedure. This guide currently describes the standalone runtime route.
+**This guide is still a draft.** The Pi Zero 2 W setup has been tested from a fresh card. The Pi 3A+ needs an extra first-boot step that we are still turning into a checked, beginner-friendly instruction.
 
-## 2. Download and prepare Volumio
+## 2. Set up Volumio
 
-You need an assembled CB-1 with the specified display, a microSD card, suitable power supply, network access and an audio output configured in Volumio.
+Volumio plays your music. Set it up before adding the touchscreen controls.
 
-The tested system is **Volumio 4.119**. Obtain the Raspberry Pi image through [Volumio](https://volumio.com/) and write it to your microSD card using an image-writing application. Writing an image erases the selected card; use a separate card to preserve a working installation. A newer Volumio image requires its own verification and is not covered by the results below.
+1. Get the Raspberry Pi image from [Volumio](https://volumio.com/). Our tests used **Volumio 4.119**; newer versions are not yet covered by this guide.
+2. Write the image to your microSD card using the instructions supplied by Volumio. **This erases the card**, so use a spare if you want to keep your old setup.
+3. Put the card into your player and switch on the power.
 
-### Raspberry Pi Zero 2 W
+**Pi 3A+ owners:** pause before first boot. Volumio 4.119 needs a boot-file change on this board. See [Troubleshooting](#troubleshooting); the complete fresh-card instructions are still being checked. The tested Zero 2 W needed no such change.
 
-The tested Zero 2 W booted a stock Volumio 4.119 image without a KMS amendment. Complete Volumio's network and audio setup in its browser interface, then confirm music plays before adding the touchscreen software.
+4. Open the **Volumio phone app**, or use a web browser on a phone or computer connected to the same network. Try **http://volumio.local**. You can also use the player's network address.
+5. Follow Volumio's setup screens to connect to your network and choose your audio output.
+6. Play some music to make sure the sound works.
 
-### Raspberry Pi 3A+
+## 3. Turn on SSH
 
-The tested 4.119 systems required board-specific KMS preparation before first boot. The historical successful preparation added the following immediately before the generic `[pi3]` stanza in `volumioconfig.txt`:
+**Do this before downloading the extra touchscreen software.**
 
-```text
-[0x9020e0]
-dtoverlay=vc4-kms-v3d,cma-128
+SSH lets your computer send setup instructions to your player.
 
-[0x9020e1]
-dtoverlay=vc4-kms-v3d,cma-128
+1. In a web browser, open **http://volumio.local/dev**. If you use the player's network address instead, add `/dev` to the end.
+2. Find **SSH** and select **Enable**.
+3. On your computer, open **Terminal** on a Mac, or **PowerShell** on Windows.
+4. Copy this line, paste it into that window and press Enter:
+
+```bash
+ssh volumio@volumio.local
 ```
 
-This records what made the tested boards boot; it is **not yet a complete verified fresh-card procedure**. The current upstream configurator instead maintains a board-specific backstop in `userconfig.txt` after Linux starts, and cannot repair a board that never reaches that stage. Reconcile and verify the pre-boot method before publishing this section as a customer installation sequence. Do not infer that a 128 MiB effective CMA pool was measured, or that system-managed boot-file edits survive updates.
+If you use the player's network address, replace `volumio.local` with that address. On the first connection, check that it is your player and accept the connection prompt. Enter your player's SSH password when asked. Nothing appears while you type the password—that is normal.
 
-## 3. Download and install @nerd's app
+Keep this window open. The next commands go into this connected window, so they run on the player.
 
-The tested release is [runtime-v1.6.0](https://github.com/foonerd/rpi-waveshare28/releases/tag/runtime-v1.6.0), also the latest published runtime when checked on 18 September 2026.
+## 4. Add the touchscreen software
 
-Enable SSH using the `/dev` page of your Volumio browser interface, then connect to the player's address as the `volumio` user. Run installation commands on the Raspberry Pi, not on your Mac or PC.
-
-The route used in the retained runtime tests is the [upstream runtime installer](https://github.com/foonerd/rpi-waveshare28/blob/main/scripts/install.sh):
+Copy this whole line into the connected window and press Enter:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/foonerd/rpi-waveshare28/main/scripts/install.sh | sudo bash -s runtime
 ```
 
-It downloads an architecture-appropriate renderer and checks its published SHA-256 before installation. It also installs the configurator and applies the configuration. Follow its reboot instruction.
+Enter the player's password if asked, then wait for the installer to finish. If it reports an error, stop and see Troubleshooting.
 
-**Version boundary:** the installer currently selects runtime-v1.6.0, but downloads the configurator from `main`. This command is therefore a changing upstream installation route, not an immutable reproduction of the September 16 test environment. Before public release, record and verify the installer/configurator revision alongside the renderer version.
+This installs [@nerd's touchscreen software](https://github.com/foonerd/rpi-waveshare28). It currently downloads **runtime-v1.6.0**. This method does not add a settings page to Volumio's Installed Plugins list.
 
-This route does not install the Volumio **Waveshare 2.8 SPI Panel** settings plugin. The runtime can work normally without appearing in Installed Plugins. The plugin is a separate upstream integration whose customer installation, settings and recovery path has not been verified by these runtime tests.
+### Choose your screen layout
 
-## 4. Choose the tested display configuration
+**Pi Zero 2 W:** the tested setup uses the default upright screen. You do not need another setup command.
 
-Inspect the current settings first:
+**Pi 3A+:** once the first-boot preparation is complete, choose **one** of these:
+
+Upright screen (Portrait):
 
 ```bash
-waveshare28-config show
-waveshare28-config detect
+sudo waveshare28-config set backend=framebuffer rotation=0 console=release
 ```
 
-For the clean-image Zero 2 W test, the defaults were **SPI, Portrait, rotation 0**. No Pi 3A+ KMS setting applies to this board.
-
-The tested Pi 3A+ configurations used **Framebuffer**:
+Wide screen (Landscape):
 
 ```bash
-# Portrait
-sudo waveshare28-config set backend=framebuffer rotation=0 console=release
-
-# Or Landscape
 sudo waveshare28-config set backend=framebuffer rotation=270 console=release
 ```
 
-Choose one orientation. Reboot when requested; firmware overlay and framebuffer orientation changes require it. An older installation without `/boot/waveshare28.conf` initially takes the installer's defaults, so explicitly restore your intended backend and orientation.
-
-Use [upstream configuration documentation](https://github.com/foonerd/rpi-waveshare28/blob/main/docs/CONFIG.md) for other settings. `/boot/waveshare28.conf` holds the durable settings; generated files are recreated by the configurator.
-
-## 5. Test your player
-
-After reboot, check:
+When setup is finished, restart the player:
 
 ```bash
-sha256sum /usr/local/bin/waveshare28-panel
+sudo reboot
+```
+
+Your Terminal connection will close during the restart. Once Volumio is ready, choose music using its web page or phone app. Use the touchscreen for track information, volume and Play/Pause.
+
+## Troubleshooting
+
+You only need this section if something goes wrong.
+
+### I cannot open Volumio or connect with SSH
+
+- Make sure the player and your phone or computer are on the same network.
+- If `volumio.local` does not work, use the player's network address.
+- For an SSH connection problem, check that you enabled SSH on the browser's `/dev` page.
+
+### My Pi 3A+ will not start
+
+A fresh Volumio 4.119 card needed a board-specific boot-file change in our Pi 3A+ tests. The touchscreen installer cannot fix this before the player starts.
+
+**The complete beginner procedure is still being checked.** Do not try random boot-file edits. The tested Zero 2 W started without this change.
+
+### The screen is blank, frozen or facing the wrong way
+
+First, restart the player. If the problem remains, reconnect with SSH as described in step 3.
+
+Copy these lines into the connected window:
+
+```bash
 waveshare28-config show
 waveshare28-config verify
 systemctl is-active waveshare28-panel
 systemctl is-enabled waveshare28-panel
 ```
 
-For the tested ARMv7 release on both boards, the renderer hash is:
+The usual healthy results are **no drift**, **active** and **enabled**. Save the output if you need help. For the wrong orientation on a Pi 3A+, repeat the matching layout command in step 4 and restart.
 
-```text
-9996c4f6eb860d474c479860bd4221ab585416ef3735c6a255ba3343d51aab86
-```
-
-Expect `no drift`, `active` and `enabled`. The hash matches the published runtime-v1.6.0 ARMv7 checksum; it does not identify the configurator version.
-
-Play Radio Paradise v2 / RP2 Main Mix and check artwork, artist/title changes, the moving progress strip, touch volume and Play/Pause. Check metadata again after a natural track change. A duration-bearing source is needed for the progress test; ordinary live web radio may have no track duration and no progress bar.
-
-### Retained PIXIS results — 16 September 2026
-
-| Hardware | Configuration | Result |
-|---|---|---|
-| Pi 3A+ Rev 1.1, `9020e1` | Volumio 4.119; v1.6.0; Framebuffer; Landscape 270 | Artwork, metadata, moving progress, touch volume and Play/Pause passed |
-| Pi 3A+ Rev 1.0, `9020e0` | Volumio 4.119; v1.6.0; Framebuffer; Portrait 0 | Track-rollover artwork/metadata, moving progress and touch controls passed |
-| Pi Zero 2 W Rev 1.0, `902120` | Clean Volumio 4.119; v1.6.0; SPI; Portrait 0 | Stock boot, installation, RP2 artwork/metadata/progress and touch controls passed |
-
-All three configurations matched the renderer hash above and reported no configuration drift with an active/enabled service. A separate older Pi 3A+ installation also migrated successfully to v1.6.0 Landscape; that was a migration, not a fresh-image test. The Portrait Pi 3A+ reference retained 1 GiB swap from earlier investigation.
-
-Peter accepted Large + Roomy readability on 18 September: readable from arm's length to one metre with reasonable eyesight, appropriate for the intended desktop, side-table and bedside use. This hands-on check is complete. Those setting names do not mean that normal-player metadata is enlarged: upstream documents `large` for startup-overlay text and `roomy` as an accepted setting that does not move the current player layout.
-
-## 6. Recovery
-
-For diagnosis, retain the output of `waveshare28-config show`, `waveshare28-config verify` and:
+For more detail to include in a help request:
 
 ```bash
 journalctl -u waveshare28-panel -b --no-pager
 ```
 
-Upstream documents `sudo waveshare28-config recover` to stop/remove the panel service and its derived configuration while keeping `/boot/waveshare28.conf` and the Pi 3A+ KMS backstop. `sudo waveshare28-config apply` reinstates the configuration. These are upstream-documented behaviours; complete recovery/uninstall and factory-reset tests are not established by the functional passes above. Preserve a known-working card or image before testing them.
+### How can I check the player is working?
 
-## Credits
+Play **Radio Paradise v2 / RP2 Main Mix**. Check that:
 
-Renderer, installer and configurator: [@nerd / foonerd](https://github.com/foonerd/rpi-waveshare28). PIXIS supplies the CB-1 project documentation and the scoped hardware test results. This is not a claim of official Volumio plugin approval.
+- Artwork and track names appear and change with the music.
+- The progress bar moves.
+- Touch volume and Play/Pause work.
 
-Upstream declares Apache-2.0, with specified device-tree overlays under GPL-2.0 OR MIT; consult the upstream repository for the applicable licences. No upstream code or binary is redistributed by this documentation draft.
+Some live radio stations do not supply a track length, so having no progress bar can be normal.
+
+### I cannot find the touchscreen plugin in Volumio
+
+That is expected with this guide. It installs the touchscreen software directly. The separate Volumio plugin and its settings page need their own installation and testing.
+
+### Which versions were tested?
+
+Tests on 16 September 2026 used **Volumio 4.119** and **runtime-v1.6.0**:
+
+| Raspberry Pi | Tested screen setup |
+|---|---|
+| Pi 3A+ | Portrait and Landscape, Framebuffer |
+| Pi Zero 2 W | Fresh-card installation, Portrait, SPI |
+
+Artwork, track information, progress and touch controls passed in these setups. These results do not cover every music service or a fresh-card Pi 3A+ installation.
+
+The Large + Roomy readability check is complete: Peter found the screen readable from arm's length to one metre with reasonable eyesight, suitable for desktop, side-table and bedside use.
+
+For technical support, the tested ARMv7 program can be checked with:
+
+```bash
+sha256sum /usr/local/bin/waveshare28-panel
+```
+
+Its expected result starts with:
+
+```text
+9996c4f6eb860d474c479860bd4221ab585416ef3735c6a255ba3343d51aab86
+```
+
+The installer also downloads a setup helper from upstream's changing `main` branch. The program version and checksum alone do not identify that helper.
+
+### Removing or restoring the screen setup
+
+Keep a working spare card or backup before trying recovery.
+
+Upstream provides `sudo waveshare28-config recover` to remove the active screen setup while keeping saved settings, and `sudo waveshare28-config apply` to restore it. **We have not completed the full recovery and uninstall tests for this guide.** Read the [upstream recovery instructions](https://github.com/foonerd/rpi-waveshare28/blob/main/docs/CONFIG.md#recover) before using them.
+
+### About this project
+
+Touchscreen software is by [@nerd / foonerd](https://github.com/foonerd/rpi-waveshare28). PIXIS provides the CB-1 guide and hardware testing. This project does not claim official Volumio plugin approval.
+
+For advanced settings and software licences, see the upstream repository. Assembly links were checked on 18 September 2026 and point to the published Beta manuals.
