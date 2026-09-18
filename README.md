@@ -86,6 +86,8 @@ sudo reboot
 
 Your Terminal connection will close during the restart. Once Volumio is ready, choose music using its web page or phone app. Use the touchscreen for track information, volume and Play/Pause.
 
+**Learn the touchscreen controls:** see [@nerd's touchscreen guide on GitHub](https://github.com/foonerd/rpi-waveshare28/blob/main/docs/UI.md#surfaces). The **Surfaces** section explains which icons to tap to open playback controls, volume, track details, player status and larger artwork, and how to close those screens.
+
 ## Troubleshooting
 
 You only need this section if something goes wrong.
