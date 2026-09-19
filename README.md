@@ -2,23 +2,23 @@
 
 ## 1. Build your music player
 
-Follow the picture guide for your Raspberry Pi:
+Follow the assembly picture guide for your Raspberry Pi:
 
 - [Raspberry Pi 3A+ assembly guide (PDF)](https://github.com/PIXISREPO/PIXIS/blob/main/PIXIS_CB-1_Assembly_Raspberry-Pi-3A%2B_Beta-v7.pdf)
 - [Raspberry Pi Zero 2 W assembly guide (PDF)](https://github.com/PIXISREPO/PIXIS/blob/main/PIXIS_CB-1_Assembly_Raspberry-Pi-Zero-2W_Beta-v4.pdf)
 
-Keep the power unplugged while building.
+Keep the power unplugged while building until you are ready to test prior to final assembly.
 
-You need a PIXIS CB-1 kit, a Raspberry Pi, the Waveshare 2.8-inch SPI touchscreen (**SKU 27579**), a microSD card, a suitable power supply and an audio system.
+You need a PIXIS CB-1 kit, a Raspberry Pi, the Waveshare 2.8-inch SPI touchscreen (**SKU 27579**), a microSD card, a suitable power supply and an audio system such as a HDMI monitor with speakers or headphones (on a Pi 3A+). Instructions for installing a DAC HAT or USB DAC or USB wireless headphones are in the PIXIS How-To repo.
 
-**This guide is still a draft.** The Pi Zero 2 W setup has been tested from a fresh card. The Pi 3A+ needs the boot-file edit in section 2. The full fresh-card customer procedure still needs an end-to-end check.
+The Pi Zero 2 W setup has been tested from a fresh card. A Pi 3A+ needs the pre boot-file edit in section 2.
 
 ## 2. Set up Volumio
 
 Volumio plays your music. Set it up before adding the touchscreen controls.
 
 1. Get the Raspberry Pi image from [Volumio](https://volumio.com/). Our tests used **Volumio 4.119**; newer versions are not yet covered by this guide.
-2. Write the image to your microSD card using the instructions supplied by Volumio. **This erases the card**, so use a spare if you want to keep your old setup.
+2. Write the image to your microSD card using the instructions supplied by Volumio. **This erases the card**, so use a new card if you want to keep your old setup.
 3. **Pi 3A+ owners:** Volumio 4.119 needs a boot-file change in order to boot. Make the change below **before putting the card into your player**. The tested Zero 2 W needed no such change and can skip this edit.
 
 ### Pi 3A+: edit the boot file
@@ -49,10 +49,10 @@ This is the boot-file amendment that made our tested Pi 3A+ boards start with **
 ### Start the player
 
 
-4. Put the card into your player and switch on the power. On its first start, Volumio creates its own Wi-Fi hotspot called **Volumio-XXXX**. Open the Wi-Fi settings on your phone, tablet or computer and connect to that hotspot.
-5. Follow the on-screen instructions to connect your player to your home Wi-Fi. If you need more help, see [Volumio's website](https://volumio.com/).
+4. Insert the card into your player and switch on the power. On its first start, Volumio creates its own Wi-Fi hotspot called **Volumio-XXXX**. Open the Wi-Fi settings on your phone, tablet or computer and connect to that hotspot.
+5. Wait until a new Volumio window pops up on your screen and follow the instructions to connect your player to your home Wi-Fi. If you need more help, see [Volumio's website](https://volumio.com/).
 6. Once the player is connected, go back to your device's Wi-Fi settings and reconnect your phone, tablet or computer to your **home Wi-Fi**.
-7. Open [**http://volumio.local**](http://volumio.local) in your web browser. Or open the **Volumio phone app** and select your player from the discovered devices.
+7. Open [**http://volumio.local**](http://volumio.local) in your web browser. Or open the **Volumio phone app** on your phone and select your player from the discovered devices.
 8. Follow the remaining Volumio setup screens, including choosing your audio output. You are now ready to play some music!
 
 ## 3. Turn on SSH
@@ -78,23 +78,23 @@ Keep this window open. The next commands go into this connected window, so they 
 
 **For normal use, go straight to [section 5: the plugin](#5-install-the-touchscreen-plugin).** It installs the touchscreen software and adds Settings in Volumio.
 
-[Section 4](#4-lab-route-standalone-touchscreen-software) is the standalone lab route, configured with commands. You do not need to do both.
+[Section 4](#4-lab-route-standalone-touchscreen-software) is the standalone lab route, configured with commands and for those comfortable at the command line. You do not need to do both.
 
 ## 4. Lab route: standalone touchscreen software
 
-Copy this whole line into the connected window and press Enter:
+Copy this whole line into the connected ssh window and press Enter:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/foonerd/rpi-waveshare28/main/scripts/install.sh | sudo bash -s runtime
 ```
 
-Enter the player's password if asked, then wait for the installer to finish. If it reports an error, stop and see Troubleshooting.
+Enter the player's password if asked, default is 'volumio' then wait for the installer to finish. If it reports an error, stop and see Troubleshooting.
 
 This installs [foonerd's touchscreen software](https://github.com/foonerd/rpi-waveshare28). It currently downloads **runtime-v1.6.0**. This method does not add a settings page to Volumio's Installed Plugins list.
 
 ### Choose your screen layout
 
-**Pi Zero 2 W:** the tested setup uses the default upright screen. You do not need another setup command.
+**Pi Zero 2 W:** the tested setup uses the default Portrait screen. You do not need another setup command.
 
 **Pi 3A+:** once the first-boot preparation is complete, choose **one** of these:
 
@@ -120,11 +120,11 @@ Your Terminal connection will close during the restart. Once Volumio is ready, c
 
 **Learn the touchscreen controls:** see [foonerd's touchscreen guide on GitHub](https://github.com/foonerd/rpi-waveshare28/blob/main/docs/UI.md#surfaces). The **Surfaces** section explains which icons to tap to open playback controls, volume, track details, player status and larger artwork, and how to close those screens.
 
-## 5. Install the touchscreen plugin
+## 5. Install the touchscreen plugin (Recommended for first time users)
 
 This is the customer installation route. It installs the touchscreen software and adds a **Settings** page to Volumio so you can change the layout and appearance.
 
-**You can skip section 4.** If you already followed it, installing the plugin replaces the same binaries and adds Settings. You will have one touchscreen system, not two.
+**You can skip section 4.** If you already followed it, installing the plugin replaces the same binaries and adds Settings. You will then have one touchscreen system, not two.
 
 **This is not a Volumio-approved plugin.**
 
@@ -163,7 +163,7 @@ volumio plugin install
 
 For an explanation of the options, see [foonerd’s plugin settings reference](https://github.com/foonerd/rpi-waveshare28/blob/main/docs/CONFIG.md#volumio-plugin).
 
-**Version reference:** use **runtime-v1.6.0** and the **16 September 2026 ARMv7 checksum** in Troubleshooting as the tested renderer reference. Foonerd confirms that the current plugin also carries that renderer. A download from `main` can change over time.
+**Version reference:** use **runtime-v1.6.0** and the **ARMv7 checksum** in Troubleshooting as the tested renderer reference. Foonerd confirms that the current plugin also carries that renderer. A download from `main` can change over time.
 
 The plugin Settings page has worked on our Pi 3A+. Its installation and Settings page on the Zero 2 W still need our hands-on test. On the Zero 2 W, expect no **3A+ KMS** or **HDMI** control. **Console** should appear only if you choose **Framebuffer**.
 
