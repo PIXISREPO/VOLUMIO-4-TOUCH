@@ -76,7 +76,7 @@ Keep this window open. The next commands go into this connected window, so they 
 
 ### Choose one installation route
 
-**For normal use, go straight to [section 5: the plugin](#5-install-the-touchscreen-plugin).** It installs the touchscreen software and adds Settings in Volumio.
+**For normal use, go straight to [section 5: the plugin](#5-install-the-touchscreen-plugin-recommended-for-first-time-users).** It installs the touchscreen software and adds Settings in Volumio.
 
 [Section 4](#4-lab-route-standalone-touchscreen-software) is the standalone lab route, configured with commands and for those comfortable at the command line. You do not need to do both.
 
@@ -218,7 +218,7 @@ Some live radio stations do not supply a track length, so having no progress bar
 
 ### I cannot find the touchscreen plugin in Volumio
 
-That is expected if you have only completed step 4. It installs the touchscreen software directly. See [Install the touchscreen plugin](#5-install-the-touchscreen-plugin) for the separate plugin and its Settings page.
+That is expected if you have only completed step 4. It installs the touchscreen software directly. See [Install the touchscreen plugin](#5-install-the-touchscreen-plugin-recommended-for-first-time-users) for the separate plugin and its Settings page.
 
 ### Which versions were tested?
 
