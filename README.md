@@ -11,7 +11,7 @@ Keep the power unplugged while building.
 
 You need a PIXIS CB-1 kit, a Raspberry Pi, the Waveshare 2.8-inch SPI touchscreen (**SKU 27579**), a microSD card, a suitable power supply and an audio system.
 
-**This guide is still a draft.** The Pi Zero 2 W setup has been tested from a fresh card. The Pi 3A+ needs an extra first-boot step that we are still turning into a checked, beginner-friendly instruction.
+**This guide is still a draft.** The Pi Zero 2 W setup has been tested from a fresh card. The Pi 3A+ needs the boot-file edit in section 2. The full fresh-card customer procedure still needs an end-to-end check.
 
 ## 2. Set up Volumio
 
@@ -19,11 +19,36 @@ Volumio plays your music. Set it up before adding the touchscreen controls.
 
 1. Get the Raspberry Pi image from [Volumio](https://volumio.com/). Our tests used **Volumio 4.119**; newer versions are not yet covered by this guide.
 2. Write the image to your microSD card using the instructions supplied by Volumio. **This erases the card**, so use a spare if you want to keep your old setup.
-3. Put the card into your player and switch on the power.
+3. **Pi 3A+ owners:** Volumio 4.119 needs a boot-file change in order to boot. Make the change below **before putting the card into your player**. The tested Zero 2 W needed no such change and can skip this edit.
 
-**Pi 3A+ owners:** pause before first boot. Volumio 4.119 needs a boot-file change on this board. See [Troubleshooting](#troubleshooting); the complete fresh-card instructions are still being checked. The tested Zero 2 W needed no such change.
+### Pi 3A+: edit the boot file
 
-4. On its first start, Volumio creates its own Wi-Fi hotspot called **Volumio-XXXX**. Open the Wi-Fi settings on your phone, tablet or computer and connect to that hotspot.
+With the freshly written microSD card still in your computer:
+
+- Open the card in **Finder** on a Mac or **File Explorer** on Windows. If it does not appear after writing the image, eject it and reconnect it. Open the partition containing `config.txt`, `userconfig.txt` and `volumioconfig.txt`. Do not format the card if Windows asks.
+- Copy `volumioconfig.txt` to your computer as a backup.
+- Open the card’s **`volumioconfig.txt`** in a plain-text editor, such as Notepad on Windows or TextEdit in plain-text mode on a Mac. Do not use Word.
+- Find the line **`[pi3]`**. Paste the following block **immediately above it**:
+
+```text
+[0x9020e0]
+dtoverlay=vc4-kms-v3d,cma-128
+
+[0x9020e1]
+dtoverlay=vc4-kms-v3d,cma-128
+
+```
+
+Leave the existing `[pi3]` line and everything below it unchanged. Include both entries: they cover the two tested Pi 3A+ board revisions. If these exact entries are already present, do not add them again.
+
+Save the file on the card as **`volumioconfig.txt`**, keeping the same name and plain-text format. Close the editor and safely eject the card.
+
+This is the boot-file amendment that made our tested Pi 3A+ boards start with **Volumio 4.119**. A Volumio update may replace this system-managed file; do not assume the same edit is needed on a newer image.
+
+### Start the player
+
+
+4. Put the card into your player and switch on the power. On its first start, Volumio creates its own Wi-Fi hotspot called **Volumio-XXXX**. Open the Wi-Fi settings on your phone, tablet or computer and connect to that hotspot.
 5. Follow the on-screen instructions to connect your player to your home Wi-Fi. If you need more help, see [Volumio's website](https://volumio.com/).
 6. Once the player is connected, go back to your device's Wi-Fi settings and reconnect your phone, tablet or computer to your **home Wi-Fi**.
 7. Open [**http://volumio.local**](http://volumio.local) in your web browser. Or open the **Volumio phone app** and select your player from the discovered devices.
@@ -157,7 +182,7 @@ You only need this section if something goes wrong.
 
 A fresh Volumio 4.119 card needed a board-specific boot-file change in our Pi 3A+ tests. The touchscreen installer cannot fix this before the player starts.
 
-**The complete beginner procedure is still being checked.** Do not try random boot-file edits. The tested Zero 2 W started without this change.
+Check that you followed [Pi 3A+: edit the boot file](#pi-3a-edit-the-boot-file), saved the file on the card, and kept the original `[pi3]` section. The tested Zero 2 W started without this change.
 
 ### The screen is blank, frozen or facing the wrong way
 
