@@ -26,7 +26,6 @@ Volumio plays your music. Set it up before adding the touchscreen controls.
 With the freshly written microSD card still in your computer:
 
 - Open the card in **Finder** on a Mac or **File Explorer** on Windows. If it does not appear after writing the image, eject it and reconnect it. Open the partition containing `config.txt`, `userconfig.txt` and `volumioconfig.txt`. Do not format the card if Windows asks.
-- Copy `volumioconfig.txt` to your computer as a backup.
 - Open the card’s **`volumioconfig.txt`** in a plain-text editor, such as Notepad on Windows or TextEdit in plain-text mode on a Mac. Do not use Word.
 - Find the line **`[pi3]`**. Paste the following block **immediately above it**:
 
@@ -42,6 +41,8 @@ dtoverlay=vc4-kms-v3d,cma-128
 Leave the existing `[pi3]` line and everything below it unchanged. Include both entries: they cover the two tested Pi 3A+ board revisions. If these exact entries are already present, do not add them again.
 
 Save the file on the card as **`volumioconfig.txt`**, keeping the same name and plain-text format. Close the editor and safely eject the card.
+
+If the edit goes wrong, download a fresh Volumio image, write it to the card again and repeat these steps.
 
 This is the boot-file amendment that made our tested Pi 3A+ boards start with **Volumio 4.119**. A Volumio update may replace this system-managed file; do not assume the same edit is needed on a newer image.
 
