@@ -48,7 +48,13 @@ If you use the player's network address, replace `volumio.local` with that addre
 
 Keep this window open. The next commands go into this connected window, so they run on the player.
 
-## 4. Add the touchscreen software
+### Choose one installation route
+
+**For normal use, go straight to [section 5: the plugin](#5-install-the-touchscreen-plugin).** It installs the touchscreen software and adds Settings in Volumio.
+
+[Section 4](#4-lab-route-standalone-touchscreen-software) is the standalone lab route, configured with commands. You do not need to do both.
+
+## 4. Lab route: standalone touchscreen software
 
 Copy this whole line into the connected window and press Enter:
 
@@ -58,7 +64,7 @@ curl -fsSL https://raw.githubusercontent.com/foonerd/rpi-waveshare28/main/script
 
 Enter the player's password if asked, then wait for the installer to finish. If it reports an error, stop and see Troubleshooting.
 
-This installs [@nerd's touchscreen software](https://github.com/foonerd/rpi-waveshare28). It currently downloads **runtime-v1.6.0**. This method does not add a settings page to Volumio's Installed Plugins list.
+This installs [foonerd's touchscreen software](https://github.com/foonerd/rpi-waveshare28). It currently downloads **runtime-v1.6.0**. This method does not add a settings page to Volumio's Installed Plugins list.
 
 ### Choose your screen layout
 
@@ -86,13 +92,15 @@ sudo reboot
 
 Your Terminal connection will close during the restart. Once Volumio is ready, choose music using its web page or phone app. Use the touchscreen for track information, volume and Play/Pause.
 
-**Learn the touchscreen controls:** see [@nerd's touchscreen guide on GitHub](https://github.com/foonerd/rpi-waveshare28/blob/main/docs/UI.md#surfaces). The **Surfaces** section explains which icons to tap to open playback controls, volume, track details, player status and larger artwork, and how to close those screens.
+**Learn the touchscreen controls:** see [foonerd's touchscreen guide on GitHub](https://github.com/foonerd/rpi-waveshare28/blob/main/docs/UI.md#surfaces). The **Surfaces** section explains which icons to tap to open playback controls, volume, track details, player status and larger artwork, and how to close those screens.
 
-## 5. Install Touch Plugin Settings
+## 5. Install the touchscreen plugin
 
-This optional step adds a **Settings** page to Volumio so you can change the screen layout and appearance without typing more commands.
+This is the customer installation route. It installs the touchscreen software and adds a **Settings** page to Volumio so you can change the layout and appearance.
 
-The plugin installs its own copy of the touchscreen software too. It is not just an extra menu.
+**You can skip section 4.** If you already followed it, installing the plugin replaces the same binaries and adds Settings. You will have one touchscreen system, not two.
+
+**This is not a Volumio-approved plugin.**
 
 ### Download and install the plugin
 
@@ -103,11 +111,11 @@ The plugin installs its own copy of the touchscreen software too. It is not just
 ssh volumio@volumio.local
 ```
 
-3. Copy and paste this whole block into the connected window. It downloads @nerd’s current software into a new temporary folder and opens the plugin folder:
+3. Copy and paste this whole block into the connected window. It downloads a small copy of foonerd’s current software, without the full Git history, into a new temporary folder and opens the plugin folder:
 
 ```bash
 plugin_folder=$(mktemp -d /tmp/waveshare28-plugin.XXXXXX)
-git clone https://github.com/foonerd/rpi-waveshare28.git "$plugin_folder" &&
+git clone --depth 1 https://github.com/foonerd/rpi-waveshare28.git "$plugin_folder" &&
 cd "$plugin_folder/plugin/waveshare28"
 ```
 
@@ -124,12 +132,16 @@ volumio plugin install
 
 6. Return to Volumio and open **Settings → Plugins → Installed Plugins**.
 7. Find **Waveshare 2.8 SPI Panel** and enable it if it is not already enabled. If you can already see **Settings**, open that.
-8. Choose your screen layout and appearance, then save your changes. For the setups used in this guide, keep **SPI / Portrait (0°)** on the Zero 2 W, or **Framebuffer / Portrait (0°) or Landscape (270°)** on the Pi 3A+.
+8. Choose your screen layout and appearance, then save your changes. The Zero 2 W starts with **SPI / Portrait (0°)**. These are defaults, not fixed restrictions—you can change them. Our Pi 3A+ setups used **Framebuffer / Portrait (0°) or Landscape (270°)**.
 9. Restart when Volumio asks you to. If this is your first touchscreen installation and the screen stays blank, restart the player once.
 
-For an explanation of the options, see [@nerd’s plugin settings reference](https://github.com/foonerd/rpi-waveshare28/blob/main/docs/CONFIG.md#volumio-plugin).
+For an explanation of the options, see [foonerd’s plugin settings reference](https://github.com/foonerd/rpi-waveshare28/blob/main/docs/CONFIG.md#volumio-plugin).
 
-**What we have tested:** this plugin installation method and its Settings page worked on our Pi 3A+ with the September 14 build. The commands above download the current upstream version, which may have changed since then. The Zero 2 W is supported by the plugin, but its plugin installation and Settings page still need our hands-on test.
+**Version reference:** use **runtime-v1.6.0** and the **16 September 2026 ARMv7 checksum** in Troubleshooting as the tested renderer reference. Foonerd confirms that the current plugin also carries that renderer. A download from `main` can change over time.
+
+The plugin Settings page has worked on our Pi 3A+. Its installation and Settings page on the Zero 2 W still need our hands-on test. On the Zero 2 W, expect no **3A+ KMS** or **HDMI** control. **Console** should appear only if you choose **Framebuffer**.
+
+**Learn the touchscreen controls:** see [foonerd’s touchscreen guide](https://github.com/foonerd/rpi-waveshare28/blob/main/docs/UI.md#surfaces) for what to tap and how to close each screen.
 
 ## Troubleshooting
 
@@ -160,7 +172,7 @@ systemctl is-active waveshare28-panel
 systemctl is-enabled waveshare28-panel
 ```
 
-The usual healthy results are **no drift**, **active** and **enabled**. Save the output if you need help. For the wrong orientation on a Pi 3A+, repeat the matching layout command in step 4 and restart.
+The usual healthy results are **no drift**, **active** and **enabled**. Save the output if you need help. For the wrong orientation on a Pi 3A+, change the layout in the plugin’s Settings page, or use the matching command in section 4 for a standalone installation, then restart when required.
 
 For more detail to include in a help request:
 
@@ -180,7 +192,7 @@ Some live radio stations do not supply a track length, so having no progress bar
 
 ### I cannot find the touchscreen plugin in Volumio
 
-That is expected if you have only completed step 4. It installs the touchscreen software directly. See [Install Touch Plugin Settings](#5-install-touch-plugin-settings) for the separate plugin and its Settings page.
+That is expected if you have only completed step 4. It installs the touchscreen software directly. See [Install the touchscreen plugin](#5-install-the-touchscreen-plugin) for the separate plugin and its Settings page.
 
 ### Which versions were tested?
 
@@ -193,7 +205,7 @@ Tests on 16 September 2026 used **Volumio 4.119** and **runtime-v1.6.0**:
 
 Artwork, track information, progress and touch controls passed in these setups. These results do not cover every music service or a fresh-card Pi 3A+ installation.
 
-The Large + Roomy readability check is complete: Peter found the screen readable from arm's length to one metre with reasonable eyesight, suitable for desktop, side-table and bedside use.
+Peter found the screen readable from arm's length to one metre with reasonable eyesight, suitable for desktop, side-table and bedside use. **Large** changes only the boot address screen; **Roomy** does not move the player layout.
 
 For technical support, the tested ARMv7 program can be checked with:
 
@@ -217,7 +229,7 @@ Upstream provides `sudo waveshare28-config recover` to remove the active screen 
 
 ### About this project
 
-Touchscreen software is by [@nerd / foonerd](https://github.com/foonerd/rpi-waveshare28). PIXIS provides the CB-1 guide and hardware testing. This project does not claim official Volumio plugin approval.
+Touchscreen software is by [foonerd](https://github.com/foonerd/rpi-waveshare28). PIXIS provides the CB-1 guide and hardware testing. This project does not claim official Volumio plugin approval.
 
 For advanced settings, see the upstream repository. Assembly links were checked on 18 September 2026 and point to the published Beta manuals.
 
@@ -225,12 +237,12 @@ For advanced settings, see the upstream repository. Assembly links were checked 
 
 **PIXIS documentation:** the original PIXIS material in this repository is copyright © 2026 PIXIS and released under the [MIT License](LICENSE).
 
-**@nerd’s software:** [rpi-waveshare28](https://github.com/foonerd/rpi-waveshare28) remains under its own upstream licences:
+**foonerd’s software:** [rpi-waveshare28](https://github.com/foonerd/rpi-waveshare28) remains under its own upstream licences:
 
 - The repository’s [main licence is Apache License 2.0](https://github.com/foonerd/rpi-waveshare28/blob/main/LICENSE).
 - Its [README](https://github.com/foonerd/rpi-waveshare28#licence) identifies device-tree overlays under `kernel/source_files/*/overlays/*.dts` as **GPL-2.0 OR MIT**.
 - The Volumio plugin’s [package metadata](https://github.com/foonerd/rpi-waveshare28/blob/main/plugin/waveshare28/package.json) separately declares **MIT**. This does not make the bundled renderer or all upstream files MIT-licensed; check the applicable upstream notices.
 
-Our MIT licence applies to PIXIS’s original contributions here. It does not relicense @nerd’s software, Volumio, or linked assembly manuals and other external material.
+Our MIT licence applies to PIXIS’s original contributions here. It does not relicense foonerd’s software, Volumio, or linked assembly manuals and other external material.
 
 Our sincere thanks go to @nerd for producing an outstanding Plugin for the Volumio community and for his help and advice in porting it to the PIXIS Platform.
