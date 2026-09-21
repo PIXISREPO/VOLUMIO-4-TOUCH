@@ -5,7 +5,7 @@
 Follow the assembly picture guide for your Raspberry Pi:
 
 - [Raspberry Pi 3A+ assembly guide (PDF)](https://github.com/PIXISREPO/PIXIS/blob/main/PIXIS_CB-1_Assembly_Raspberry-Pi-3A%2B_Beta-v7.pdf)
-- [Raspberry Pi Zero 2 W assembly guide (PDF)](https://github.com/PIXISREPO/PIXIS/blob/main/PIXIS_CB-1_Assembly_Raspberry-Pi-Zero-2W_Beta-v4.pdf)
+- [Raspberry Pi Zero 2 W assembly guide (PDF)](https://raw.githubusercontent.com/PIXISREPO/PIXIS/main/PIXIS_CB-1_Assembly_Raspberry-Pi-Zero-2W_Beta-v4.pdf)
 
 Keep the power unplugged while building until you are ready to test prior to final assembly.
 
