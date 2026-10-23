@@ -2,6 +2,9 @@
 
 ## 1. Build your music player
 
+https://pixis.uk/a-music-player-you-can-see-and-touch-volumio-on-pixis/<img width="480" height="480" alt="image" src="https://github.com/user-attachments/assets/0061cf7b-3caf-45d2-a7ee-507bd6495867" />
+
+
 Follow the assembly picture guide for your Raspberry Pi:
 
 - [Raspberry Pi 3A+ assembly guide (PDF)](https://github.com/PIXISREPO/PIXIS/blob/main/PIXIS_CB-1_Assembly_Raspberry-Pi-3A%2B_Beta-v7.pdf)
