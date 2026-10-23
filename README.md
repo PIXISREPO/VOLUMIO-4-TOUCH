@@ -9,7 +9,7 @@ Follow the assembly picture guide for your Raspberry Pi:
 
 Keep the power unplugged while building until you are ready to test prior to final assembly.
 
-You need a PIXIS CB-1 kit, a Raspberry Pi, the Waveshare 2.8-inch SPI touchscreen (**SKU 27579**), a microSD card, a suitable power supply and an audio system such as a HDMI monitor with speakers or headphones (on a Pi 3A+). Instructions for installing a DAC HAT or USB DAC or USB wireless headphones are in the PIXIS How-To repo.
+You need a PIXIS CB-1 kit, a Raspberry Pi 3A+ or Zero 2W, the Waveshare 2.8-inch SPI touchscreen (**SKU 27579**), a microSD card, a suitable power supply and an audio system such as a HDMI monitor with speakers or headphones (on a Pi 3A+). Instructions for installing a DAC HAT or USB DAC or USB wireless headphones are in the PIXIS How-To repo.
 
 The Pi Zero 2 W setup has been tested from a fresh card. A Pi 3A+ needs the pre boot-file edit in section 2.
 
