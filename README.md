@@ -11,7 +11,7 @@ Keep the power unplugged while building until you are ready to test prior to fin
 
 You need a PIXIS CB-1 kit, a Raspberry Pi 3A+ or Zero 2W, the Waveshare 2.8-inch SPI touchscreen (**SKU 27579**), a microSD card, a suitable power supply and an audio system such as a HDMI monitor with speakers or headphones (Pi 3A+) or a USB DAC or USB Wireless Headphone Adapter. Instructions for installing a DAC HAT or USB DAC or USB wireless headphones are in the PIXIS How-To repo.
 
-A Pi Zero 2 W Volimio 4 image has been tested on a fresh SD card and requires no pre-boot file but a Pi 3A+ needs a pre boot-file edit otherwise it will not boot - see Section 2 for detaails.
+A Pi Zero 2 W Volumio 4 image has been tested on a fresh SD card and requires no pre-boot file but a Pi 3A+ needs a pre boot-file edit otherwise it will not boot - see Section 2 for detaails.
 
 ## 2. Set up Volumio
 
