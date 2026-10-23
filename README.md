@@ -2,6 +2,8 @@
 
 ## 1. Build your music player
 
+
+Blog Article link 
 https://pixis.uk/a-music-player-you-can-see-and-touch-volumio-on-pixis/<img width="480" height="480" alt="image" src="https://github.com/user-attachments/assets/0061cf7b-3caf-45d2-a7ee-507bd6495867" />
 
 
